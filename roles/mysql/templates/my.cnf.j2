@@ -1,0 +1,40 @@
+[mysqld]
+port = {{ mysql_port }}
+socket = {{ data_dir }}/run/mysql.sock
+pid_file = {{ data_dir }}/run/mysql.pid
+datadir = {{ data_dir }}/data
+
+skip-name-resolve
+
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+init_connect='SET NAMES utf8mb4'
+
+
+innodb_buffer_pool_size = 1024M
+innodb_log_file_size = 2048M
+innodb_file_per_table = 1
+innodb_flush_log_at_trx_commit = 0
+
+
+key_buffer_size = 64M
+
+log-error = {{ data_dir }}/log/mysql_error.log
+log-bin = {{ data_dir }}/binlogs/mysql-bin
+slow_query_log = 1
+slow_query_log_file = {{ data_dir }}/log/mysql_slow_query.log
+long_query_time = 5
+
+
+tmp_table_size = 32M
+max_heap_table_size = 32M
+query_cache_type = 0
+query_cache_size = 0
+
+server-id={{ server_id }}
+
+relay_log_purge = 0
+
+gtid_mode=ON
+log_slave_updates
+enforce_gtid_consistency

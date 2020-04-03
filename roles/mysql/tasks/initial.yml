@@ -1,0 +1,10 @@
+- name: initial mysql
+  shell: "mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir={{ data_dir }}/data"
+  ignore_errors: yes
+
+- name: touch mysql_error.log
+  file:
+    path: "{{ data_dir }}/log/mysql_error.log"
+    state: touch
+    owner: mysql
+    group: mysql

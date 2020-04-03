@@ -1,0 +1,5 @@
+[mysql_server]
+mysql01 ansible_host=10.0.0.20 server_id=1
+mysql02 ansible_host=10.0.0.21 server_id=2
+mysql03 ansible_host=10.0.0.22 server_id=3
+

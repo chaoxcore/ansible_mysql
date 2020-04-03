@@ -1,0 +1,62 @@
+- name: create mysql group
+  group:
+    gid: 777
+    name: mysql
+
+- name: create mysql user
+  user:
+    name: mysql
+    group: mysql
+    uid: 777
+    shell: /sbin/nologin
+    create_home: no
+  
+- name: unarchive mysql
+  unarchive:
+    src: mysql-5.7.28-linux-glibc2.12-x86_64.tar.gz
+    dest: /usr/local/
+
+- name: create symbol link
+  file:
+    src: /usr/local/mysql-5.7.28-linux-glibc2.12-x86_64
+    dest: /usr/local/mysql
+    owner: mysql
+    group: mysql
+    state: link
+
+- name: create data dir
+  file:
+    path: "{{ data_dir }}/{{ item }}"
+    state: directory
+    owner: mysql
+    group: mysql
+  with_items:
+    - log
+    - etc
+    - run
+    - data
+    - binlogs
+
+- name: my.cnf
+  template:
+    src: my.cnf.j2
+    dest: "{{ data_dir }}/etc/my.cnf"
+
+- name: add environment vars
+  template:
+    src: mysql.sh.j2
+    dest: /etc/profile.d/mysql.sh
+
+- name: source profile
+  shell: source /etc/profile
+
+- name: systemd
+  template:
+    src: mysqld.service.j2
+    dest: "/usr/lib/systemd/system/mysqld{{ mysql_port }}.service"
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+
+- import_tasks: initial.yml
