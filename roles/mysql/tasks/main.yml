@@ -10,15 +10,12 @@
     uid: 777
     shell: /sbin/nologin
     create_home: no
-  
-- name: unarchive mysql
-  unarchive:
-    src: mysql-5.7.28-linux-glibc2.12-x86_64.tar.gz
-    dest: /usr/local/
 
+#- import_tasks: unarchieve.yml
+  
 - name: create symbol link
   file:
-    src: /usr/local/mysql-5.7.28-linux-glibc2.12-x86_64
+    src: "/usr/local/{{ mysql_version }}"
     dest: /usr/local/mysql
     owner: mysql
     group: mysql

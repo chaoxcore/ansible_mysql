@@ -1,0 +1,4 @@
+- name: unarchive mysql
+  unarchive:
+    src: "{{ mysql_version }}.tar.gz"
+    dest: /usr/local
